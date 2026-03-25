@@ -3,9 +3,11 @@ import { motion, useScroll, useSpring } from 'framer-motion'
 import Section from './Section'
 import Layout from './Layout'
 import { sections } from './sections'
+import ChatModal from './ChatModal'
 
 export default function LandingPage() {
   const [activeSection, setActiveSection] = useState(0)
+  const [chatOpen, setChatOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ container: containerRef })
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
@@ -67,9 +69,12 @@ export default function LandingPage() {
             key={section.id}
             {...section}
             isActive={index === activeSection}
+            onButtonClick={section.showButton ? () => setChatOpen(true) : undefined}
           />
         ))}
       </div>
+
+      <ChatModal isOpen={chatOpen} onClose={() => setChatOpen(false)} />
     </Layout>
   )
 }
